@@ -8,27 +8,24 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "address")
+@Table(name = "current_pay_method")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Address{
+public class CurPayMethod {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @Column(name = "country")
-    private String country;
-    @Column(name = "town")
-    private String town;
-    @Column(name = "street")
-    private String street;
-    @Column(name = "house")
-    private int house;
-    @Column(name = "title")
-    private String title;
+    @Column(nullable = false, name = "pay_name")
+    private String name;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+    @ManyToOne
+    @JoinColumn(name = "pay_id")
+    private PayMethod payMethod;
+    @Column(name = "data")
+    private String data;
 }

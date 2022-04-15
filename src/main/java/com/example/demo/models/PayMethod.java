@@ -1,14 +1,24 @@
 package com.example.demo.models;
 
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "pay_method")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Data
 public class PayMethod {
     @Id
-    @Column(unique = true, nullable = false, name = "pay_name")
-    private String name;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pay_id")
+    private Long id;
+    @Column(name = "title")
+    private String title;
+    @Column(name = "data")
+    private String data;
 }
