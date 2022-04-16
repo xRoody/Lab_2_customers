@@ -23,7 +23,7 @@ public class CustomerDTO {
     private String firstName;
     private String dob; //date of birth
     private Collection<AddressDTO> addresses=new HashSet<>();
-    private Collection<CurPayMethodDTO> payMethods=new HashSet<>();
+    private Collection<CustomerPayMethodDTO> payMethods=new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

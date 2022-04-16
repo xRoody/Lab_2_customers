@@ -37,7 +37,7 @@ public class Customer {
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "customer")
     private Collection<Address> addresses=new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "customer")
-    private Collection<CurPayMethod> curPayMethods =new HashSet<>();
+    private Collection<CustomerPayMethod> customerPayMethods =new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

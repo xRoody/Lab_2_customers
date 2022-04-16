@@ -2,7 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.DTOs.CustomerDTO;
 import com.example.demo.exceptions.CustomerNotFoundException;
-import com.example.demo.models.CurPayMethod;
+import com.example.demo.models.CustomerPayMethod;
 import com.example.demo.models.Customer;
 import com.example.demo.repositories.CustomerRepo;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class CustomerServiceImpl implements CustomerService{
     private final CustomerRepo customerRepo;
     private final AddressService addressService;
-    private final CurPayMethodService curPayMethodService;
+    private final CustomerPayMethodService customerPayMethodService;
 
     public Customer getById(Long id){
         return customerRepo.findById(id).orElse(null);
@@ -32,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService{
         Customer customer=getById(id);
         if (customer!=null){
             f=true;
-            customer.getCurPayMethods().forEach(x->x.setCustomer(null));
+            customer.getCustomerPayMethods().forEach(x->x.setCustomer(null));
             customerRepo.deleteById(id);
         }
         return f;
@@ -55,7 +55,7 @@ public class CustomerServiceImpl implements CustomerService{
                 .lastName(customer.getLastName())
                 .firstName(customer.getFirstName())
                 .addresses(customer.getAddresses().stream().map(x->addressService.getDTObyObject(x)).collect(Collectors.toSet()))
-                .payMethods(customer.getCurPayMethods().stream().map(x-> curPayMethodService.getDTObyObject(x)).collect(Collectors.toSet()))
+                .payMethods(customer.getCustomerPayMethods().stream().map(x-> customerPayMethodService.getDTObyObject(x)).collect(Collectors.toSet()))
                 .build();
         return customerDTO;
     }
@@ -74,17 +74,17 @@ public class CustomerServiceImpl implements CustomerService{
                 .password(dto.getPassword()) //encode here !!!
                 .build();
         customer=customerRepo.save(customer);
-        customer.setCurPayMethods(new HashSet<>());
+        customer.setCustomerPayMethods(new HashSet<>());
         customer.setAddresses(new HashSet<>());
         Long id=customer.getId();
         customer.getAddresses().addAll(dto.getAddresses().stream().map(x->{
             x.setCustomerId(id);
             return addressService.getByDTO(x);
         }).collect(Collectors.toSet()));
-        customer.getCurPayMethods().addAll(dto.getPayMethods().stream().map(x->{
+        customer.getCustomerPayMethods().addAll(dto.getPayMethods().stream().map(x->{
             x.setCustomerId(id);
-            CurPayMethod curPayMethod=curPayMethodService.getByDTO(x);
-            return curPayMethod;
+            CustomerPayMethod customerPayMethod = customerPayMethodService.getByDTO(x);
+            return customerPayMethod;
         }).collect(Collectors.toSet()));
     }
 
@@ -106,7 +106,7 @@ public class CustomerServiceImpl implements CustomerService{
         customer.setLastName(customerDTO.getLastName());
         customer.setDob(LocalDate.parse(customerDTO.getDob()));
         customer.setAddresses(customerDTO.getAddresses().stream().map(x->addressService.getByDTO(x)).collect(Collectors.toSet()));
-        customer.setCurPayMethods(customerDTO.getPayMethods().stream().map(x-> curPayMethodService.getByDTO(x)).collect(Collectors.toSet()));
+        customer.setCustomerPayMethods(customerDTO.getPayMethods().stream().map(x-> customerPayMethodService.getByDTO(x)).collect(Collectors.toSet()));
         customerRepo.save(customer);
     }
 

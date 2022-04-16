@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Data
 @Builder
-public class CurPayMethodDTO {
+public class CustomerPayMethodDTO {
     private Long id;
     private String name;
     private Long customerId;
@@ -18,7 +18,7 @@ public class CurPayMethodDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CurPayMethodDTO that = (CurPayMethodDTO) o;
+        CustomerPayMethodDTO that = (CustomerPayMethodDTO) o;
         return Objects.equals(name, that.name) && Objects.equals(customerId, that.customerId);
     }
 
