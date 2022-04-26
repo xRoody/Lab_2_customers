@@ -3,6 +3,9 @@ package com.example.demo.exceptions;
 public class CustomerNotFoundException extends Exception{
     private Long id;
 
+    public CustomerNotFoundException() {
+    }
+
     public CustomerNotFoundException(Long id) {
         this.id = id;
     }

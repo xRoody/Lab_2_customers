@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.DTOs.CustomerPayMethodDTO;
 import com.example.demo.models.CustomerPayMethod;
+import com.example.demo.models.PayMethod;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface CustomerPayMethodService {
     void addNewCurPayMethod(CustomerPayMethodDTO customerPayMethodDTO);
     boolean deleteCurPayMethod(Long id);
     void updateCurPayMethod(CustomerPayMethodDTO dto, Long id);
+    int countAllByPayMethod(PayMethod payMethod);
 }
