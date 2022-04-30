@@ -15,7 +15,7 @@ public class PayMethodValidatorImpl implements PayMethodValidator{
         List<BodyReport> reports=new ArrayList<>();
         validateData(payMethodDTO.getData(), reports);
         validateTitle(payMethodDTO.getTitle(), reports);
-        return null;
+        return reports;
     }
 
     private void validateTitle(String title, List<BodyReport> reports){

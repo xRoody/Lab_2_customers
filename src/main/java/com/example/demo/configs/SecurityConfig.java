@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String REGISTER_PATH="/customers/register";
     public static final String TOKEN_REFRESH_PATH="/customers/refreshToken";
     public static final String IS_PAY_METHOD_EXISTS_PATH="/payMethods/{id}/isExists"; //  404/200
+    public static final String ADDRESSES_FOR_CUSTOMER="/customers/{id}/addresses";
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -41,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customFilter.setFilterProcessesUrl(LOGIN_PATH);
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers(REGISTER_PATH, LOGIN_PATH,TOKEN_REFRESH_PATH, IS_PAY_METHOD_EXISTS_PATH).permitAll();
+        http.authorizeRequests().antMatchers(REGISTER_PATH, LOGIN_PATH,TOKEN_REFRESH_PATH, IS_PAY_METHOD_EXISTS_PATH, ADDRESSES_FOR_CUSTOMER).permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customFilter);
         http.addFilterBefore(new CustomAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

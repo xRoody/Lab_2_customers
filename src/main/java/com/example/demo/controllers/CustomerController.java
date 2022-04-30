@@ -128,4 +128,10 @@ public class CustomerController {
         }
         return ResponseEntity.ok(customerService.findOffers(id));
     }
+
+    @GetMapping("/{id}/addresses")
+    public ResponseEntity<Object> getAllADressesByCustomerId(@PathVariable("id") Long id){
+        if (!customerService.isExists(id)) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(customerService.findDTOById(id).getAddresses());
+    }
 }

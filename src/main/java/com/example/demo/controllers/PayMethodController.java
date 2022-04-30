@@ -30,7 +30,7 @@ public class PayMethodController {
         PayMethodDTO payMethodDTO = payMethodsService.getDTOById(id);
         if (payMethodDTO == null) {
             log.debug("PayMethod with id={} not found", id);
-            return new ResponseEntity<>("Reason: Pay method not exists",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(payMethodDTO, HttpStatus.OK);
     }

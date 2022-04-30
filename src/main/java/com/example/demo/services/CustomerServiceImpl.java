@@ -114,7 +114,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public Object findOffers(Long id) {
         List<Long> longs=getById(id).getCustomerPayMethods().stream().map(x->x.getId()).collect(Collectors.toList());
-        Object ob=client.post().uri("/offers/help", id).bodyValue(longs).retrieve().bodyToMono(Object.class).block();
+        Object ob=client.post().uri("/offers/help", id).bodyValue(longs).retrieve().bodyToMono(Object.class).block(); //to offer dto list
         log.info("{} by id={}", ob, id);
         return ob;
     }
@@ -123,7 +123,7 @@ public class CustomerServiceImpl implements CustomerService{
         Customer customer=customerRepo.findById(id).orElse(null);
         if (customer==null) throw new CustomerNotFoundException(id);
         customer.setLogin(customerDTO.getLogin());
-        customer.setPassword(customerDTO.getPassword());
+        customer.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
         customer.setEmail(customerDTO.getEmail());
         customer.setFirstName(customerDTO.getFirstName());
         customer.setLastName(customerDTO.getLastName());
