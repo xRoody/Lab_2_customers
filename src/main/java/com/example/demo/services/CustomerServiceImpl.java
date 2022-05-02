@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.DTOs.CustomerDTO;
 import com.example.demo.DTOs.LoginFormDTO;
+import com.example.demo.DTOs.OfferDTO;
 import com.example.demo.exceptions.CustomerNotFoundException;
 import com.example.demo.models.CustomerPayMethod;
 import com.example.demo.models.Customer;
@@ -22,6 +23,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -66,7 +69,7 @@ public class CustomerServiceImpl implements CustomerService{
         if (customer==null) return null;
         return CustomerDTO.builder()
                 .id(customer.getId())
-                .dob(customer.getDob().toString())
+                .dob(customer.getDob())
                 .email(customer.getEmail())
                 .login(customer.getLogin())
                 .password(customer.getPassword())
@@ -80,12 +83,12 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public void addNewCustomer(CustomerDTO dto){
         Customer customer=Customer.builder()
-                .dob(LocalDate.parse(dto.getDob()))
+                .dob(dto.getDob())
                 .email(dto.getEmail())
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .login(dto.getLogin())
-                .password(passwordEncoder.encode(dto.getPassword())) //encode here !!!
+                .password(passwordEncoder.encode(dto.getPassword()))
                 .build();
         customer=customerRepo.save(customer);
         customer.setCustomerPayMethods(new HashSet<>());
@@ -114,7 +117,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public Object findOffers(Long id) {
         List<Long> longs=getById(id).getCustomerPayMethods().stream().map(x->x.getId()).collect(Collectors.toList());
-        Object ob=client.post().uri("/offers/help", id).bodyValue(longs).retrieve().bodyToMono(Object.class).block(); //to offer dto list
+        Object ob=client.post().uri("/offers/help", id).bodyValue(longs).retrieve().toEntityList(OfferDTO.class).block(); //to offer dto list
         log.info("{} by id={}", ob, id);
         return ob;
     }
@@ -127,7 +130,7 @@ public class CustomerServiceImpl implements CustomerService{
         customer.setEmail(customerDTO.getEmail());
         customer.setFirstName(customerDTO.getFirstName());
         customer.setLastName(customerDTO.getLastName());
-        customer.setDob(LocalDate.parse(customerDTO.getDob()));
+        customer.setDob(customerDTO.getDob());
         customer.setAddresses(customerDTO.getAddresses().stream().map(x->addressService.getByDTO(x)).collect(Collectors.toSet()));
         customer.setCustomerPayMethods(customerDTO.getPayMethods().stream().map(x-> customerPayMethodService.getByDTO(x)).collect(Collectors.toSet()));
         customerRepo.save(customer);

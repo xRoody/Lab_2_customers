@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -32,8 +34,8 @@ public class Customer {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
-    @Column(name = "dob")
-    private LocalDate dob; //date of birth
+    @Column(name = "dob", columnDefinition = "TIMESTAMP")
+    private LocalDateTime dob; //date of birth
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "customer")
     private Collection<Address> addresses=new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "customer")

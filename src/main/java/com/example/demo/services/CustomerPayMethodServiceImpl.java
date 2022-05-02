@@ -28,7 +28,7 @@ public class CustomerPayMethodServiceImpl implements CustomerPayMethodService {
     }
 
     public List<CustomerPayMethodDTO> getAllCurPayMethods(){
-        return customerPayMethodRepo.findAll().stream().map(x->getDTObyObject(x)).collect(Collectors.toList());
+        return customerPayMethodRepo.findAll().stream().map(this::getDTObyObject).collect(Collectors.toList());
     }
 
     public void addNewCurPayMethod(CustomerPayMethodDTO customerPayMethodDTO){

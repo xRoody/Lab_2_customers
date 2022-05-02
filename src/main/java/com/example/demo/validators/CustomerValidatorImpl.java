@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -99,14 +102,13 @@ public class CustomerValidatorImpl implements CustomerValidator {
     }
 
 
-    private void validateDob(String dob, List<BodyReport> reports) {
-        if (dob == null || dob.isBlank())
+    private void validateDob(LocalDateTime date, List<BodyReport> reports) {
+        if (date == null)
             reports.add(new BodyReport("e-001", "dob", "Dob must be not empty (only whitespaces / null)"));
         else {
-            LocalDate date = LocalDate.parse(dob);
-            if (!date.isAfter(LocalDate.now().minusYears(OLD_LIMIT)))
+            if (!date.isAfter(LocalDateTime.now().minusYears(OLD_LIMIT)))
                 reports.add(new BodyReport("t-001", "dob", "Incorrect dob. Customer must be younger " + OLD_LIMIT));
-            if (!date.isBefore(LocalDate.now().minusYears(YOUNG_LIMIT)))
+            if (!date.isBefore(LocalDateTime.now().minusYears(YOUNG_LIMIT)))
                 reports.add(new BodyReport("t-002", "dob", "Incorrect dob. Customer must be older " + YOUNG_LIMIT));
         }
     }

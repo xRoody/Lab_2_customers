@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -21,7 +23,7 @@ public class CustomerDTO {
     private String email;
     private String lastName;
     private String firstName;
-    private String dob; //date of birth
+    private LocalDateTime dob; //date of birth
     private Collection<AddressDTO> addresses=new HashSet<>();
     private Collection<CustomerPayMethodDTO> payMethods=new HashSet<>();
 
